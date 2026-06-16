@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class AssetManager {
@@ -33,7 +34,7 @@ class AssetManager {
       final ui.FrameInfo frameInfo = await codec.getNextFrame();
       _images[key] = frameInfo.image;
     } catch (e) {
-      print('Failed to load image $assetPath: $e');
+      debugPrint('Failed to load image $assetPath: $e');
     }
   }
 

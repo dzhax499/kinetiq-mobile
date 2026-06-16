@@ -260,7 +260,7 @@ class _MenuPageState extends State<MenuPage> {
                                   if (blurAmount > 0.1)
                                     Positioned.fill(
                                       child: Container(
-                                        color: Colors.black.withOpacity((difference.abs() * 0.6).clamp(0.0, 0.6)),
+                                        color: Colors.black.withValues(alpha: (difference.abs() * 0.6).clamp(0.0, 0.6)),
                                       ),
                                     ),
                                 ],
@@ -282,7 +282,7 @@ class _MenuPageState extends State<MenuPage> {
                             transform: Matrix4.identity()
                               ..setEntry(3, 2, 0.001) // perspective
                               ..rotateY(-tilt)
-                              ..scale(scale),
+                              ..scaleByDouble(scale, scale, 1.0, 1.0),
                             child: Opacity(
                               opacity: 1.0 - (difference.abs() * 0.3).clamp(0.0, 0.5),
                               child: card,

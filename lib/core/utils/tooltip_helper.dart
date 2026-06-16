@@ -9,6 +9,8 @@ class TooltipHelper {
     final prefs = await SharedPreferences.getInstance();
     final key = _prefsKeyPrefix + message; // Use message as key for simplicity
 
+    if (!context.mounted) return;
+
     if (prefs.getBool(key) == true) {
       return; // Already seen
     }

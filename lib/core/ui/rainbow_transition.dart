@@ -5,10 +5,10 @@ class RainbowTransition extends StatefulWidget {
   final Animation<double> animation;
 
   const RainbowTransition({
-    Key? key,
+    super.key,
     required this.child,
     required this.animation,
-  }) : super(key: key);
+  });
 
   @override
   State<RainbowTransition> createState() => _RainbowTransitionState();
