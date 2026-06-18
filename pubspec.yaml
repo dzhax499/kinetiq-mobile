@@ -71,3 +71,9 @@ flutter:
     - family: game_font
       fonts:
         - asset: assets/fonts/game_font.otf
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icongame.png"
+  min_sdk_android: 21
