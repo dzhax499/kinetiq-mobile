@@ -501,7 +501,7 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
                 ),
               ),
               Text(
-                'P1 SKOR: ${_p1Score > 0 ? "⭐" * _p1Score : ""}',
+                'P1 SKOR: $_p1Score',
                 style: const TextStyle(
                   fontFamily: 'game_font',
                   fontSize: 32,
@@ -529,7 +529,7 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
                   ),
                 ),
                 Text(
-                  '${_p2Score > 0 ? "⭐" * _p2Score : ""} :SKOR P2',
+                  '$_p2Score :SKOR P2',
                   style: const TextStyle(
                     fontFamily: 'game_font',
                     fontSize: 32,

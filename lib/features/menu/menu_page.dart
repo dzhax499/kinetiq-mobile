@@ -247,6 +247,7 @@ class _MenuPageState extends State<MenuPage> {
 
   void _proceedToGame(String route, int players) {
     if (route == '/tiru_gaya') {
+      SoundManager().playTransition();
       Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
     } else {
       showDialog(
