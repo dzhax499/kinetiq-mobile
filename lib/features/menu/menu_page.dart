@@ -2,8 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../core/ui/rainbow_transition.dart';
-import '../games/tiru_gaya/tiru_gaya_page.dart';
-
+// import '../games/tiru_gaya/tiru_gaya_page.dart';
 import '../../core/audio/sound_manager.dart';
 import '../../core/ui/snow_background.dart';
 
@@ -63,39 +62,75 @@ class _MenuPageState extends State<MenuPage> {
     SoundManager().playClick();
     showDialog(
       context: context,
+      useSafeArea: false,
       builder: (context) => Dialog(
         backgroundColor: const Color(0xFF1B1B2F),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: SingleChildScrollView(
+          child: Stack(
             children: [
+              // Logos di Pojok Kanan Atas
+              Positioned(
+                top: 12,
+                right: 12,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset('assets/images/polban.png', width: 32, fit: BoxFit.contain),
+                    const SizedBox(width: 8),
+                    Image.asset('assets/images/game_logo.png', width: 48, fit: BoxFit.contain),
+                  ],
+                ),
+              ),
+              // Konten Utama
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 32, 16, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
               const Text(
                 'DEVELOPED BY',
                 style: TextStyle(fontFamily: 'game_font', color: Color(0xFF00BFFF), fontSize: 20),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               const Text(
                 'TIM KINETIQFUN',
                 style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               const Text(
                 'KELAS 2C - KELOMPOK C9',
                 style: TextStyle(fontFamily: 'game_font', color: Color(0xFFFFD700), fontSize: 14),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              const Text(
-                'Dzakir Tsabit Asy Syafiq (241511071)\n'
-                'Helga Athifa Hidayat (241511077)\n'
-                'Nike Kustiane (241511086)\n'
-                'Wyandhanu Maulidan Nugraha (241511092)',
-                style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12, height: 1.5),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('Dzakir Tsabit Asy Syafiq (241511071)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text('Helga Athifa Hidayat (241511077)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Nike Kustiane (241511086)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text('Wyandhanu Maulidan Nugraha (241511092)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -116,6 +151,9 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                 ),
               ),
+            ],
+          ),
+        ),
             ],
           ),
         ),
@@ -210,9 +248,9 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   void _proceedToGame(String route, int players) {
-    if (route == '/tiru_gaya') {
-      Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
-    } else {
+    // if (route == '/tiru_gaya') {
+    //   Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
+    // } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -233,7 +271,7 @@ class _MenuPageState extends State<MenuPage> {
           ],
         ),
       );
-    }
+    // }
   }
 
   @override
@@ -424,6 +462,7 @@ class _MenuPageState extends State<MenuPage> {
                     const SizedBox(height: 16),
                   ],
                 ),
+
               ],
             ),
           ),
