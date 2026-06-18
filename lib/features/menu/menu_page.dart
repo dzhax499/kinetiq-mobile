@@ -66,9 +66,11 @@ class _MenuPageState extends State<MenuPage> {
       builder: (context) => Dialog(
         backgroundColor: const Color(0xFF1B1B2F),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 5.0),
+        child: Container(
+          width: 550,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -100,9 +102,8 @@ class _MenuPageState extends State<MenuPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
-              IntrinsicWidth(
-                child: Table(
-                  defaultColumnWidth: const IntrinsicColumnWidth(),
+              Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
                   children: [
                     TableRow(
                       children: [
@@ -128,10 +129,9 @@ class _MenuPageState extends State<MenuPage> {
                         const Padding(padding: EdgeInsets.only(left: 24.0, bottom: 6.0), child: Text('(241511092)', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
                       ],
                     ),
-                  ],
-                ),
+                ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               SizedBox(
                 width: 120,
                 height: 40,
@@ -155,6 +155,7 @@ class _MenuPageState extends State<MenuPage> {
         ),
       ),
     ),
+  ),
   );
 }
 
