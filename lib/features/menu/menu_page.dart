@@ -66,28 +66,24 @@ class _MenuPageState extends State<MenuPage> {
       builder: (context) => Dialog(
         backgroundColor: const Color(0xFF1B1B2F),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              // Logos di Pojok Kanan Atas
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+        child: Container(
+          width: 550,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Logos (Berdampingan di Tengah)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('assets/images/polban.png', width: 32, fit: BoxFit.contain),
                     const SizedBox(width: 8),
                     Image.asset('assets/images/game_logo.png', width: 48, fit: BoxFit.contain),
                   ],
                 ),
-              ),
-              // Konten Utama
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 32, 16, 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+                const SizedBox(height: 8),
               const Text(
                 'DEVELOPED BY',
                 style: TextStyle(fontFamily: 'game_font', color: Color(0xFF00BFFF), fontSize: 20),
@@ -106,33 +102,36 @@ class _MenuPageState extends State<MenuPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+              Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
+                  children: [
+                    TableRow(
                       children: [
-                        Text('Dzakir Tsabit Asy Syafiq (241511071)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
-                        const SizedBox(height: 8),
-                        Text('Helga Athifa Hidayat (241511077)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const Padding(padding: EdgeInsets.only(bottom: 6.0), child: Text('Dzakir Tsabit Asy Syafiq', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                        const Padding(padding: EdgeInsets.only(left: 24.0, bottom: 6.0), child: Text('(241511071)', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
                       ],
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    TableRow(
                       children: [
-                        Text('Nike Kustiane (241511086)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
-                        const SizedBox(height: 8),
-                        Text('Wyandhanu Maulidan Nugraha (241511092)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const Padding(padding: EdgeInsets.only(bottom: 6.0), child: Text('Helga Athifa Hidayat', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                        const Padding(padding: EdgeInsets.only(left: 24.0, bottom: 6.0), child: Text('(241511077)', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
                       ],
                     ),
-                  ),
+                    TableRow(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(bottom: 6.0), child: Text('Nike Kustiane', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                        const Padding(padding: EdgeInsets.only(left: 24.0, bottom: 6.0), child: Text('(241511086)', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(bottom: 6.0), child: Text('Wyandhanu Maulidan Nugraha', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                        const Padding(padding: EdgeInsets.only(left: 24.0, bottom: 6.0), child: Text('(241511092)', style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 13))),
+                      ],
+                    ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               SizedBox(
                 width: 120,
                 height: 40,
@@ -154,12 +153,11 @@ class _MenuPageState extends State<MenuPage> {
             ],
           ),
         ),
-            ],
-          ),
-        ),
       ),
-    );
-  }
+    ),
+  ),
+  );
+}
 
   void _navigateToGame(String route) {
     SoundManager().playClick();
