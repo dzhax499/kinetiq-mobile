@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-import '../../core/audio/sound_manager.dart';
 import '../../core/ui/rainbow_transition.dart';
+// import '../games/tiru_gaya/tiru_gaya_page.dart';
+import '../../core/audio/sound_manager.dart';
 import '../../core/ui/snow_background.dart';
 
 class MenuPage extends StatefulWidget {
@@ -62,48 +62,216 @@ class _MenuPageState extends State<MenuPage> {
     SoundManager().playClick();
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.indigo[900],
-        title: const Text('Developer Info', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          'Dibuat oleh Tim KinetiQFun\nPoliteknik Negeri Bandung',
-          style: TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              SoundManager().playClick();
-              Navigator.of(context).pop();
-            },
-            child: const Text('Tutup', style: TextStyle(color: Colors.pinkAccent)),
+      useSafeArea: false,
+      builder: (context) => Dialog(
+        backgroundColor: const Color(0xFF1B1B2F),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              // Logos di Pojok Kanan Atas
+              Positioned(
+                top: 12,
+                right: 12,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset('assets/images/polban.png', width: 32, fit: BoxFit.contain),
+                    const SizedBox(width: 8),
+                    Image.asset('assets/images/game_logo.png', width: 48, fit: BoxFit.contain),
+                  ],
+                ),
+              ),
+              // Konten Utama
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 32, 16, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+              const Text(
+                'DEVELOPED BY',
+                style: TextStyle(fontFamily: 'game_font', color: Color(0xFF00BFFF), fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'TIM KINETIQFUN',
+                style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'KELAS 2C - KELOMPOK C9',
+                style: TextStyle(fontFamily: 'game_font', color: Color(0xFFFFD700), fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('Dzakir Tsabit Asy Syafiq (241511071)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text('Helga Athifa Hidayat (241511077)', textAlign: TextAlign.right, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Nike Kustiane (241511086)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                        const SizedBox(height: 8),
+                        Text('Wyandhanu Maulidan Nugraha (241511092)', textAlign: TextAlign.left, style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: 120,
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00BFFF),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  onPressed: () {
+                    SoundManager().playClick();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'TUTUP',
+                    style: TextStyle(fontFamily: 'game_font', color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   void _navigateToGame(String route) {
     SoundManager().playClick();
+    _showModeSelectionDialog(route);
+  }
+
+  void _showModeSelectionDialog(String route) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.indigo[900],
-        title: const Text('Segera Hadir', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          'Game ini masih dalam tahap pengembangan oleh tim.',
-          style: TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              SoundManager().playClick();
-              Navigator.of(context).pop();
-            },
-            child: const Text('Tutup', style: TextStyle(color: Colors.pinkAccent)),
+      builder: (context) => Material(
+        type: MaterialType.transparency,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Kotak Dialog di tengah
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1A1A2E), // Warna gelap
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.cyanAccent, width: 3),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'PILIH MODE MAIN',
+                          style: TextStyle(
+                            fontFamily: 'game_font',
+                            fontSize: 28,
+                            color: Colors.cyanAccent,
+                            shadows: [Shadow(color: Colors.black, blurRadius: 4, offset: Offset(2, 2))],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 32),
+                        _buildModeButton('MAIN SENDIRI', () {
+                          SoundManager().playClick();
+                          Navigator.of(context).pop();
+                          _proceedToGame(route, 1);
+                        }),
+                        const SizedBox(height: 16),
+                        _buildModeButton('MAIN BERDUA', () {
+                          SoundManager().playClick();
+                          Navigator.of(context).pop();
+                          _proceedToGame(route, 2);
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  Widget _buildModeButton(String text, VoidCallback onTap) {
+    return SizedBox(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.cyanAccent,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontFamily: 'game_font',
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _proceedToGame(String route, int players) {
+    // if (route == '/tiru_gaya') {
+    //   Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
+    // } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.indigo[900],
+          title: const Text('Segera Hadir', style: TextStyle(color: Colors.white)),
+          content: const Text(
+            'Game ini masih dalam tahap pengembangan oleh tim.',
+            style: TextStyle(color: Colors.white70),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                SoundManager().playClick();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tutup', style: TextStyle(color: Colors.pinkAccent)),
+            ),
+          ],
+        ),
+      );
+    // }
   }
 
   @override
@@ -294,6 +462,7 @@ class _MenuPageState extends State<MenuPage> {
                     const SizedBox(height: 16),
                   ],
                 ),
+
               ],
             ),
           ),
