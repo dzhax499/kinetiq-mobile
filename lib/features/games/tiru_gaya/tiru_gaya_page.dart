@@ -459,84 +459,7 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
       );
     }
 
-    // 2. Loading Model Overlay
-    if (!_isModelLoaded) {
-      return Center(
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.yellowAccent.withValues(alpha: 0.3)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              CircularProgressIndicator(color: Colors.yellowAccent),
-              SizedBox(height: 16),
-              Text(
-                'MEMPROSES MODEL GAYA...',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'game_font',
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
 
-    // 3. Waiting for Players Lobby
-    if (_isWaitingForPlayers) {
-      return Stack(
-        children: [
-          Center(
-            child: Container(
-              width: size.width * 0.85,
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              color: Colors.black54,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'WAITING...',
-                    style: TextStyle(
-                      color: Colors.pinkAccent,
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'game_font',
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'PLEASE PROP THE DEVICE UPRIGHT ON A STABLE SURFACE.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: 'game_font',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.playerCount == 1 
-                        ? 'MAKE SURE 1 PLAYER IS STANDING IN THE FRAME.' 
-                        : 'MAKE SURE 2 PLAYERS ARE STANDING IN THE FRAME.',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: 'game_font',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-    }
 
     // 4. Standard Game HUD
     return Stack(
@@ -619,7 +542,7 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
           ),
 
         // Center Target Image
-        if (_isGameStarted && !_showSnapshot)
+        if (_isGameStarted && !_showSnapshot && !_isWaitingForPlayers)
           Align(
             alignment: const Alignment(0, 0.4),
             child: Image.asset(
@@ -627,6 +550,50 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
               width: 250,
               height: 250,
               fit: BoxFit.contain,
+            ),
+          ),
+          
+        // 3. Waiting for Players Lobby Overlay
+        if (_isWaitingForPlayers)
+          Center(
+            child: Container(
+              width: size.width * 0.85,
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              color: Colors.black.withValues(alpha: 0.85),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'WARNING...',
+                    style: TextStyle(
+                      color: Colors.pinkAccent,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'game_font',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'PLEASE PROP THE DEVICE UPRIGHT ON A STABLE SURFACE.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: 'game_font',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.playerCount == 1 
+                        ? 'MAKE SURE 1 PLAYER IS STANDING IN THE FRAME.' 
+                        : 'MAKE SURE 2 PLAYERS ARE STANDING IN THE FRAME.',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: 'game_font',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           

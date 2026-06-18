@@ -49,18 +49,93 @@ abstract class BasePoseScreenState<T extends BasePoseScreen> extends State<T> wi
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          CameraView(
-            customPaint: _customPaint,
-            onImage: _processImage,
-            initialDirection: CameraLensDirection.front,
-            controller: cameraViewController,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final shouldPop = await _showQuitDialog(context);
+        if (shouldPop == true) {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            CameraView(
+              customPaint: _customPaint,
+              onImage: _processImage,
+              initialDirection: CameraLensDirection.front,
+              controller: cameraViewController,
+            ),
+            buildGameUI(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<bool?> _showQuitDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+          color: Colors.black.withValues(alpha: 0.95),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'QUIT GAME',
+                style: TextStyle(
+                  color: Color(0xFFFF4444),
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'game_font',
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'ARE YOU SURE YOU WANT TO QUIT THIS GAME?',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: 'game_font',
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('NO', style: TextStyle(color: Colors.white, fontFamily: 'game_font', fontSize: 24)),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF4444),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('YES', style: TextStyle(color: Colors.white, fontFamily: 'game_font', fontSize: 24)),
+                  ),
+                ],
+              ),
+            ],
           ),
-          buildGameUI(context),
-        ],
+        ),
       ),
     );
   }

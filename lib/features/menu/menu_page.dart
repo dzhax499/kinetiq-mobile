@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../core/ui/rainbow_transition.dart';
-// import '../games/tiru_gaya/tiru_gaya_page.dart';
+import '../games/tiru_gaya/tiru_gaya_page.dart';
 import '../../core/audio/sound_manager.dart';
 import '../../core/ui/snow_background.dart';
 
@@ -246,9 +246,9 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   void _proceedToGame(String route, int players) {
-    // if (route == '/tiru_gaya') {
-    //   Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
-    // } else {
+    if (route == '/tiru_gaya') {
+      Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
+    } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -269,7 +269,7 @@ class _MenuPageState extends State<MenuPage> {
           ],
         ),
       );
-    // }
+    }
   }
 
   @override
