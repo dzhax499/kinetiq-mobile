@@ -383,22 +383,22 @@ class _MenuPageState extends State<MenuPage> {
                                   // Cardbox Container
                                   Image.asset('assets/images/cardbox.png', fit: BoxFit.contain, width: 320),
                                   
-                                  // Screenshot Placeholder (Ratio 16:9, Width 84%, Vert Bias 0.42)
+                                  // Screenshot Placeholder (Ratio 16:9)
                                   Align(
-                                    alignment: const Alignment(0, -0.16), // Bias 0.42 approx (0 = center, -1 = top, +1 = bot)
+                                    alignment: const Alignment(0, -0.16),
                                     child: FractionallySizedBox(
-                                      widthFactor: 0.84,
+                                      widthFactor: 0.65,
                                       child: AspectRatio(
                                         aspectRatio: 16 / 9,
                                         child: Container(
                                           color: Colors.black,
                                           alignment: Alignment.center,
                                           child: const Text(
-                                            "Tangkap Layar Game",
+                                            "TANGKAP LAYAR GAME",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily: 'game_font',
-                                              fontSize: 14,
+                                              fontSize: 10,
                                             ),
                                           ),
                                         ),
@@ -406,19 +406,23 @@ class _MenuPageState extends State<MenuPage> {
                                     ),
                                   ),
                                   
-                                  // Judul Game (Bottom margin 24)
+                                  // Judul Game
                                   Positioned(
-                                    bottom: 24,
-                                    child: Text(
-                                      games[index]['title'],
-                                      style: const TextStyle(
-                                        fontFamily: 'game_font',
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        shadows: [Shadow(color: Colors.black, blurRadius: 4, offset: Offset(2, 2))],
+                                    bottom: 28,
+                                    left: 16,
+                                    right: 16,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        games[index]['title'].toString().toUpperCase(),
+                                        style: const TextStyle(
+                                          fontFamily: 'game_font',
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                   
