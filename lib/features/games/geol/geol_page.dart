@@ -5,14 +5,14 @@ import '../base_pose_screen.dart';
 import '../game_engine.dart';
 import '../../../core/audio/sound_manager.dart';
 
-class BalapGeolScreen extends BasePoseScreen {
-  const BalapGeolScreen({super.key});
+class GeolKicauManiaPage extends BasePoseScreen {
+  const GeolKicauManiaPage({super.key});
 
   @override
-  State<BalapGeolScreen> createState() => _BalapGeolScreenState();
+  State<GeolKicauManiaPage> createState() => _GeolKicauManiaPageState();
 }
 
-class _BalapGeolScreenState extends BasePoseScreenState<BalapGeolScreen> {
+class _GeolKicauManiaPageState extends BasePoseScreenState<GeolKicauManiaPage> {
   bool isGameStarted = false;
   int _countdown = 5;
   Timer? _countdownTimer;
