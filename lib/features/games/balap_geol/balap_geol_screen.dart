@@ -23,7 +23,7 @@ class _BalapGeolScreenState extends BasePoseScreenState<BalapGeolScreen> {
   void initState() {
     super.initState();
     engine.setGameMode(GameMode.balapGeol);
-    SoundManager().playBgm('audio/kicau_mania_background_music.mp3');
+    SoundManager().playBgm('audio/balap_geol_bgm.mp3');
     _startCountdown();
   }
 

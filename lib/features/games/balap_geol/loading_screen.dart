@@ -17,12 +17,7 @@ class _BalapGeolLoadingScreenState extends State<BalapGeolLoadingScreen> {
   }
 
   Future<void> _startLoading() async {
-    // Memutar background music dari SoundManager
-    try {
-      await SoundManager().playBgm('audio/balap_geol_bgm_placeholder.txt');
-    } catch (e) {
-      debugPrint("Gagal memutar audio: $e");
-    }
+    // Music akan diputar di BalapGeolScreen
 
     // Simulasi loading 3 detik sebelum masuk game
     await Future.delayed(const Duration(seconds: 3));

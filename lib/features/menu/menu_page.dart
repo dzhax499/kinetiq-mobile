@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../games/kesatria/kesatria_page.dart';
-import '../games/geol/geol_page.dart';
+import '../games/balap_geol/loading_screen.dart';
 import '../games/tiru_gaya/tiru_gaya_page.dart';
 import '../../core/audio/sound_manager.dart';
 import '../../core/ui/rainbow_transition.dart';
@@ -26,7 +26,7 @@ class _MenuPageState extends State<MenuPage> {
       'route': '/kesatria'
     },
     {
-      'title': 'Geol Kicau Mania',
+      'title': 'Balap Geol',
       'icon': 'assets/images/icongame.png',
       'route': '/geol'
     },
@@ -84,7 +84,7 @@ class _MenuPageState extends State<MenuPage> {
     if (route == '/kesatria') {
       targetPage = const KesatriaPage();
     } else if (route == '/geol') {
-      targetPage = const GeolKicauManiaPage();
+      targetPage = const BalapGeolLoadingScreen();
     } else {
       targetPage = const TiruGayaPage();
     }
