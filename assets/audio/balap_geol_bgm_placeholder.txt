@@ -1,0 +1,2 @@
+This is a placeholder file for Balap Geol Background Music (BGM).
+The actual audio files (e.g., .mp3, .wav) should be placed here and will be ignored by source control if they are too large, or tracked if requested.
