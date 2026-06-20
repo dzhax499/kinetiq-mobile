@@ -17,7 +17,6 @@ void main() async {
   // Inisialisasi Audio dan Assets
   await SoundManager().init();
   await AssetManager().init();
-
   runApp(const KinetiqFunApp());
 }
 
