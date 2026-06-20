@@ -318,12 +318,15 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
           // Background hitam
           Container(color: Colors.black),
 
-          // Video
           if (_videoController != null && _videoController!.value.isInitialized)
-            Center(
-              child: AspectRatio(
-                aspectRatio: _videoController!.value.aspectRatio,
-                child: VideoPlayer(_videoController!),
+            SizedBox.expand(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: _videoController!.value.size.width,
+                  height: _videoController!.value.size.height,
+                  child: VideoPlayer(_videoController!),
+                ),
               ),
             )
           else
@@ -352,18 +355,51 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
 
           // ── Timer countdown — pojok kanan atas ──────────────────────────────
           Positioned(
-            top: 16,
-            right: 28,
-            child: Text(
-              _tutorialSecondsLeft.clamp(0, 99).toString().padLeft(2, '0'),
-              style: const TextStyle(
-                fontFamily: 'game_font',
-                fontSize: 52,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [
-                  Shadow(color: Colors.black54, blurRadius: 6, offset: Offset(2, 3)),
-                ],
+            top: 32,
+            right: 32,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF3B3E51), // Warna abu-abu kebiruan gelap seperti di gambar
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                _tutorialSecondsLeft.clamp(0, 99).toString().padLeft(2, '0'),
+                style: const TextStyle(
+                  fontFamily: 'game_font',
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+
+          // ── Tombol Skip — pojok kanan bawah ─────────────────────────────────
+          Positioned(
+            bottom: 32,
+            right: 32,
+            child: GestureDetector(
+              onTap: () {
+                SoundManager().playClick();
+                _onVideoEnd();
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(30), // Pill shape
+                  border: Border.all(color: Colors.grey.shade400, width: 2),
+                ),
+                child: const Text(
+                  'SKIP',
+                  style: TextStyle(
+                    fontFamily: 'game_font',
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
