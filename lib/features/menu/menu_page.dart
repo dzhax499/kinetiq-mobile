@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../core/ui/rainbow_transition.dart';
+import '../games/kesatria/kesatria_page.dart';
 // import '../games/tiru_gaya/tiru_gaya_page.dart';
 import '../../core/audio/sound_manager.dart';
 import '../../core/ui/snow_background.dart';
@@ -66,7 +67,7 @@ class _MenuPageState extends State<MenuPage> {
       builder: (context) => Dialog(
         backgroundColor: const Color(0xFF1B1B2F),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: Container(
+        child: SizedBox(
           width: 550,
           child: SingleChildScrollView(
             child: Padding(
@@ -246,9 +247,10 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   void _proceedToGame(String route, int players) {
-    // if (route == '/tiru_gaya') {
-    //   Navigator.of(context).push(RainbowPageRoute(page: TiruGayaPage(playerCount: players)));
-    // } else {
+    if (route == '/kesatria') {
+      SoundManager().stopBgm();
+      Navigator.of(context).push(RainbowPageRoute(page: KesatriaPage(playerCount: players)));
+    } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -269,7 +271,7 @@ class _MenuPageState extends State<MenuPage> {
           ],
         ),
       );
-    // }
+    }
   }
 
   @override
