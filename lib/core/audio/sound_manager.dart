@@ -32,23 +32,23 @@ class SoundManager {
   }
 
   Future<void> playClick() async {
-    await playSfx('audio/button_click_sfx.wav');
+    await playSfx('audio/button_click_sfx.mp3');
   }
 
   Future<void> playTransition() async {
-    await playSfx('audio/transition_sfx.wav');
+    await playSfx('audio/transition_sfx.mp3');
   }
 
   Future<void> playAction({double pitch = 1.0}) async {
-    await playSfx('audio/box_crack.wav', pitch: pitch);
+    await playSfx('audio/box_crack.mp3', pitch: pitch);
   }
 
   Future<void> playVictory() async {
-    await playSfx('audio/win_sfx.wav');
+    await playSfx('audio/win_sfx.mp3');
   }
 
   Future<void> playCapture() async {
-    await playSfx('audio/capture.wav');
+    await playSfx('audio/capture.mp3');
   }
 
   void dispose() {
