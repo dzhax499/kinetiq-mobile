@@ -411,24 +411,33 @@ class _TiruGayaPageState extends BasePoseScreenState<TiruGayaPage> {
               child: CircularProgressIndicator(color: Colors.yellowAccent),
             ),
           
+          // Tutorial Text (Top Center)
+          Positioned(
+            top: 32,
+            left: 0,
+            right: 0,
+            child: const Center(
+              child: Text(
+                'TUTORIAL',
+                style: TextStyle(
+                  fontFamily: 'game_font',
+                  fontSize: 48,
+                  color: Color(0xFFFF2A2A), // Bright red
+                ),
+              ),
+            ),
+          ),
+          
           // Tutorial Countdown (Top Right)
           Positioned(
             top: 32,
             right: 32,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white24),
-              ),
-              child: Text(
-                _tutorialCountdown.toString().padLeft(2, '0'),
-                style: const TextStyle(
-                  fontFamily: 'game_font',
-                  fontSize: 28,
-                  color: Colors.yellowAccent,
-                ),
+            child: Text(
+              _tutorialCountdown.toString().padLeft(2, '0'),
+              style: const TextStyle(
+                fontFamily: 'game_font',
+                fontSize: 40,
+                color: Colors.white,
               ),
             ),
           ),
