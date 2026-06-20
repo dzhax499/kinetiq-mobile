@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'features/menu/menu_page.dart';
+import 'features/splash/splash_page.dart';
 import 'core/audio/sound_manager.dart';
 import 'core/assets/asset_manager.dart';
 
@@ -37,7 +37,7 @@ class KinetiqFunApp extends StatelessWidget {
         fontFamily: 'Inter', // Bisa diganti sesuai kebutuhan
       ),
       debugShowCheckedModeBanner: false,
-      home: const MenuPage(),
+      home: const SplashPage(),
     );
   }
 }

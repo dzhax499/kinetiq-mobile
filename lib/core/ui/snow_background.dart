@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class SnowBackground extends StatefulWidget {
   final Widget child;
 
-  const SnowBackground({super.key, required this.child});
+  const SnowBackground({Key? key, required this.child}) : super(key: key);
 
   @override
   State<SnowBackground> createState() => _SnowBackgroundState();
