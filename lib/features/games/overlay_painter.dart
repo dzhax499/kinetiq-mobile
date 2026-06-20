@@ -70,7 +70,13 @@ class OverlayPainter extends CustomPainter {
 
     // Draw Rocks
     final boxImg = AssetManager().getImage('box');
-    final textStyle = const TextStyle(color: Colors.yellow, fontSize: 16, fontWeight: FontWeight.bold);
+    final textStyle = const TextStyle(
+      color: Colors.yellow, 
+      fontSize: 18, 
+      fontWeight: FontWeight.bold,
+      fontFamily: 'game_font',
+      shadows: [Shadow(color: Colors.black, blurRadius: 3, offset: Offset(1, 1))]
+    );
     
     for (var rock in engine.rocks) {
       if (!rock.isDestroyed) {
@@ -78,7 +84,7 @@ class OverlayPainter extends CustomPainter {
         final textSpan = TextSpan(text: 'HP: ${5 - rock.hits}', style: textStyle);
         final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
         textPainter.layout();
-        textPainter.paint(canvas, Offset(rock.rect.center.dx - textPainter.width / 2, rock.rect.top - 20));
+        textPainter.paint(canvas, Offset(rock.rect.center.dx - textPainter.width / 2, rock.rect.top - 25));
 
         // Shake rect
         Rect drawRect = rock.rect;
@@ -142,19 +148,21 @@ class OverlayPainter extends CustomPainter {
     if (engine.currentGameMode != GameMode.balapGeol && engine.currentGameMode != GameMode.tiruGaya) {
       final style = const TextStyle(
         color: Color(0xFFFFEB3B), 
-        fontSize: 65, 
+        fontSize: 28, 
         fontFamily: 'game_font',
-        shadows: [Shadow(color: Colors.black, blurRadius: 5, offset: Offset(2, 2))]
+        shadows: [Shadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1))]
       );
       final p1Span = TextSpan(text: 'P1: ${engine.scoreP1}', style: style);
       final p2Span = TextSpan(text: 'P2: ${engine.scoreP2}', style: style);
       
       TextPainter(text: p1Span, textDirection: TextDirection.ltr)
         ..layout()
-        ..paint(canvas, const Offset(50, 100));
+        ..paint(canvas, const Offset(20, 30));
         
-      final p2Painter = TextPainter(text: p2Span, textDirection: TextDirection.ltr)..layout();
-      p2Painter.paint(canvas, Offset(size.width - p2Painter.width - 50, 100));
+      if (engine.playerCount > 1) {
+        final p2Painter = TextPainter(text: p2Span, textDirection: TextDirection.ltr)..layout();
+        p2Painter.paint(canvas, Offset(size.width - p2Painter.width - 20, 30));
+      }
     }
 
     if (engine.winner != null) {

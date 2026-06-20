@@ -5,7 +5,6 @@ import 'package:video_player/video_player.dart';
 import '../base_pose_screen.dart';
 import '../game_engine.dart';
 import '../../../core/audio/sound_manager.dart';
-import '../../../core/utils/tooltip_helper.dart';
 
 class KesatriaPage extends BasePoseScreen {
   final int playerCount;
@@ -20,8 +19,11 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
   // ── Video tutorial ──────────────────────────────────────────────────────────
   VideoPlayerController? _videoController;
   bool _videoFinished = false;
+  Timer? _videoRefreshTimer;
+  int _tutorialSecondsLeft = 10; // timer tetap 10 detik
 
   // ── Game state ───────────────────────────────────────────────────────────────
+  bool _isWaiting = false;    // menunggu pemain terdeteksi (mode solo)
   bool isGameStarted = false;
   int _countdown = 5;
   Timer? _countdownTimer;
@@ -35,10 +37,10 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
 
   bool get _isSolo => widget.playerCount == 1;
 
-  // ── Lifecycle ─────────────────────────────────────────────────────────────────
   @override
   void initState() {
     super.initState();
+    engine.playerCount = widget.playerCount;
     engine.setGameMode(GameMode.kesatria);
     _initVideo();
   }
@@ -50,6 +52,14 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
     if (mounted) {
       setState(() {});
       _videoController!.play();
+      // Countdown 10 detik, update UI tiap detik
+      _videoRefreshTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (!mounted || _videoFinished) return;
+        setState(() {
+          _tutorialSecondsLeft--;
+          if (_tutorialSecondsLeft <= 0) _onVideoEnd();
+        });
+      });
     }
   }
 
@@ -65,6 +75,7 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
   void _onVideoEnd() {
     if (_videoFinished) return;
     _videoFinished = true;
+    _videoRefreshTimer?.cancel();
     _videoController?.pause();
     _startGame();
   }
@@ -73,14 +84,15 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
     SoundManager().playBgm('audio/kesatria_pcd_background_music.mp3');
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initRocks();
-      _startCountdown();
-      _showTooltips();
+      // Tunggu hingga pemain masuk frame (berlaku untuk 1 dan 2 pemain)
+      setState(() => _isWaiting = true);
     });
   }
 
   @override
   void dispose() {
     _countdownTimer?.cancel();
+    _videoRefreshTimer?.cancel();
     _videoController?.removeListener(_onVideoListener);
     _videoController?.dispose();
     super.dispose();
@@ -96,9 +108,9 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
     int nextId = 0;
 
     if (_isSolo) {
-      // Main sendiri: 3 batu P1 tersebar di seluruh layar
+      // Main sendiri: 3 batu P1 di area kiri (sama seperti P1 mode duo)
       for (int i = 0; i < 3; i++) {
-        _spawnRockSolo(width, height, i, nextId++);
+        _spawnRock(1, width, height, i, nextId++);
       }
     } else {
       // Main berdua: masing-masing 3 batu di area separuh layar
@@ -109,25 +121,7 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
     }
   }
 
-  /// Spawn batu untuk mode solo — tersebar di seluruh lebar layar
-  void _spawnRockSolo(double screenWidth, double screenHeight, int index, int id) {
-    final rockWidth = screenWidth / 8.0;
-    final rockHeight = rockWidth;
-
-    final slotMultipliers = [0.15, 0.5, 0.85];
-    final slot = slotMultipliers[index % 3];
-
-    final x = screenWidth * slot - rockWidth / 2.0;
-    final startY = screenHeight - rockHeight - 50.0;
-
-    engine.rocks.add(Rock(
-      id: id,
-      ownerId: 1,
-      rect: Rect.fromLTWH(x, startY, rockWidth, rockHeight),
-    ));
-  }
-
-  /// Spawn batu untuk mode duo — tiap pemain di area separuh layar
+  /// Spawn batu untuk tiap pemain di areanya
   void _spawnRock(int playerId, double screenWidth, double screenHeight, int index, int id) {
     final rockWidth = screenWidth / 10.0;
     final rockHeight = rockWidth;
@@ -164,6 +158,17 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
 
   @override
   void onPoseDetected(List<Pose> poses, Size imageSize) {
+    // Saat waiting: cek apakah pemain yang dibutuhkan sudah terdeteksi
+    if (_isWaiting) {
+      bool ready = _isSolo ? poses.isNotEmpty : poses.length >= 2;
+      if (ready) {
+        setState(() => _isWaiting = false);
+        _startCountdown();
+        _showTooltips();
+      }
+      return;
+    }
+
     if (!isGameStarted || engine.winner != null) return;
 
     for (var playerId in engine.targetLandmarks.keys) {
@@ -229,28 +234,23 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
   }
 
   void _showTooltips() {
-    if (!mounted) return;
-    final size = MediaQuery.of(context).size;
-
-    if (_isSolo) {
-      // Solo: satu tooltip di tengah layar
-      TooltipHelper.showAtPoint(context, 'Area Pemain', size.width * 0.5, size.height * 0.5);
-    } else {
-      // Duo: tooltip di masing-masing area
-      TooltipHelper.showAtPoint(context, 'Area Pemain 1', size.width * 0.25, size.height * 0.5);
-      TooltipHelper.showAtPoint(context, 'Area Pemain 2', size.width * 0.75, size.height * 0.5);
-    }
+    // Tooltip dihilangkan sesuai permintaan
   }
 
-  // ── UI ────────────────────────────────────────────────────────────────────────
+  // ── UI ───────────────────────────────────────────────────────────────────
   @override
   Widget buildGameUI(BuildContext context) {
-    // 1. Tampilkan video tutorial sampai selesai/di-skip
+    // 1. Video tutorial
     if (!_videoFinished) {
       return _buildVideoOverlay();
     }
 
-    // 2. Countdown sebelum game mulai
+    // 2. Waiting screen (mode solo: tunggu pemain terdeteksi)
+    if (_isWaiting) {
+      return _buildWaitingOverlay();
+    }
+
+    // 3. Countdown
     if (!isGameStarted) {
       return Center(
         child: Text(
@@ -266,16 +266,59 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
       );
     }
 
-    // 3. Game berlangsung — tidak ada UI tambahan
+    // 4. Game berlangsung
     return const SizedBox.shrink();
+  }
+
+  Widget _buildWaitingOverlay() {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+        color: const Color(0xFF262626), // Warna abu gelap pekat tanpa radius sesuai gambar
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Judul WAITING...
+            Text(
+              'WAITING...',
+              style: TextStyle(
+                fontFamily: 'game_font',
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFE8274B),
+                shadows: [
+                  Shadow(color: Colors.black.withValues(alpha: 0.6), blurRadius: 6, offset: const Offset(2, 3)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Instruksi
+            Text(
+              'PLEASE PROP THE DEVICE UPRIGHT ON A STABLE SURFACE.\nMAKE SURE ${_isSolo ? '1 PLAYER IS' : '2 PLAYERS ARE'} STANDING IN THE FRAME.',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'game_font',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildVideoOverlay() {
     return Positioned.fill(
       child: Stack(
         children: [
+          // Background hitam
           Container(color: Colors.black),
 
+          // Video
           if (_videoController != null && _videoController!.value.isInitialized)
             Center(
               child: AspectRatio(
@@ -286,34 +329,41 @@ class _KesatriaPageState extends BasePoseScreenState<KesatriaPage> {
           else
             const Center(child: CircularProgressIndicator(color: Colors.white)),
 
+          // ── Label "TUTORIAL" — tengah atas ──────────────────────────────────
           Positioned(
-            top: 24,
-            right: 24,
-            child: GestureDetector(
-              onTap: _onVideoEnd,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.white54, width: 1.5),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'SKIP',
-                      style: TextStyle(
-                        fontFamily: 'game_font',
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 6),
-                    Icon(Icons.skip_next, color: Colors.white, size: 20),
+            top: 20,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Text(
+                'TUTORIAL',
+                style: TextStyle(
+                  fontFamily: 'game_font',
+                  fontSize: 42,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFFE8274B),
+                  shadows: [
+                    Shadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 4, offset: const Offset(2, 3)),
                   ],
                 ),
+              ),
+            ),
+          ),
+
+          // ── Timer countdown — pojok kanan atas ──────────────────────────────
+          Positioned(
+            top: 16,
+            right: 28,
+            child: Text(
+              _tutorialSecondsLeft.clamp(0, 99).toString().padLeft(2, '0'),
+              style: const TextStyle(
+                fontFamily: 'game_font',
+                fontSize: 52,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                shadows: [
+                  Shadow(color: Colors.black54, blurRadius: 6, offset: Offset(2, 3)),
+                ],
               ),
             ),
           ),

@@ -62,6 +62,7 @@ class Rock {
 
 class GameEngine extends ChangeNotifier {
   GameMode currentGameMode = GameMode.kesatria;
+  int playerCount = 2;
   String? winner;
   int scoreP1 = 0;
   int scoreP2 = 0;
